@@ -1,2 +1,25 @@
-<h1>Subventions#index</h1>
-<p>Find me in app/views/subventions/index.html.erb</p>
+<h1>Voici la liste des subventions proposées:</h1><br>
+
+<div class="row">
+
+  <% @subventions.each do |subvention| %>
+  <div class="col-xs-6 col-sm-4">
+    <div class="card" style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.1)), url(<%= subvention.photo %>);">
+      <div class="card-category">A hauteur de <%= subvention.amount / 100 %>€</div>
+      <div class="card-description">
+        <h4><%= subvention.name %></h4>
+        <p>Du <%= subvention.start_date.strftime("%d/%m/%Y") %> au <%= subvention.end_date.strftime("%d/%m/%Y") %></p>
+      </div>
+      <div class="card-user"><h5><%= subvention.subvention_requests.size %></h5>
+        <p>participants</p>
+      </div>
+      <% if subvention.date_ok? %>
+        <a class="card-link" href=<%= new_subvention_subvention_request_path(subvention) %>></a>
+      <% else %>
+        <div class="card-time-out"><h1>EXPIRE</h1></div>
+      <% end %>
+    </div>
+  </div>
+  <% end %>
+
+</div>

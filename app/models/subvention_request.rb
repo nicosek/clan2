@@ -12,4 +12,6 @@ class SubventionRequest < ApplicationRecord
                                         message: "Le montant du remboursement ne doit pas\
    dépasser celui autorisé par la subvention" }
   validates :justif_path, presence: true
+
+  mount_uploader :justif_path, JustifUploader
 end

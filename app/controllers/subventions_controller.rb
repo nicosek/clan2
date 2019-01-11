@@ -1,5 +1,5 @@
 class SubventionsController < ApplicationController
   def index
-    @subvention = Subvention.all
+    @subventions = Subvention.all
   end
 end
