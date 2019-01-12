@@ -25,12 +25,18 @@ class SubventionRequestTest < ActiveSupport::TestCase
   })
 
   test "email must be present" do
-    request = SubventionRequest.new(justif_path: "path.jpg", amount_asked: 1, subvention: subvention2)
+    request = SubventionRequest.new(amount_asked: 1, subvention: subvention2)
+    File.open(File.dirname(__FILE__) + '/../../app/assets/images/clan.jpg') do |f|
+      request.justif_path = f
+    end
     assert_not request.valid?, "An email should be present to validate the request"
   end
 
   test "email must be valid" do
-    request = SubventionRequest.new(email: "nicolas", justif_path: "path.jpg", amount_asked: 1, subvention: subvention2)
+    request = SubventionRequest.new(email: "nicolas", amount_asked: 1, subvention: subvention2)
+    File.open(File.dirname(__FILE__) + '/../../app/assets/images/clan.jpg') do |f|
+      request.justif_path = f
+    end
     assert_not request.valid?, "'nicolas' shouldn't be a valid email"
     request.email = "nicolas@gmail"
     assert_not request.valid?, "'nicolas@gmail' shouldn't be a valid email"
@@ -44,24 +50,40 @@ class SubventionRequestTest < ActiveSupport::TestCase
   end
 
   test "amount_asked must be present" do
-    request = SubventionRequest.new(email: "nicolas@gmail.com", justif_path: "path.jpg", subvention: subvention2)
+    request = SubventionRequest.new(email: "nicolas@gmail.com", subvention: subvention2)
+    File.open(File.dirname(__FILE__) + '/../../app/assets/images/clan.jpg') do |f|
+      request.justif_path = f
+    end
     assert_not request.valid?, "An amount must be present to validate the request"
   end
 
   test "amount_asked must not be higher than the subvention amount" do
-    request = SubventionRequest.new(email: "nicolas@gmail.com", justif_path: "path.jpg", amount_asked: 18001, subvention: subvention2)
+    request = SubventionRequest.new(email: "nicolas@gmail.com", amount_asked: 18001, subvention: subvention2)
+    File.open(File.dirname(__FILE__) + '/../../app/assets/images/clan.jpg') do |f|
+      request.justif_path = f
+    end
     assert_not request.valid?, "Shouldn't be able to create a request with an amount_asked of 18001 for a subvention where amount_asked is 18000"
   end
 
   test "amount_asked plus amount_asked for a previous request for same subvention must not be higher than subvention amount" do
-    request1 = SubventionRequest.create!(email: "nicolas@gmail.com", justif_path: "path.jpg", amount_asked: 1, subvention: subvention2)
-    request2 = SubventionRequest.new(email: "nicolas@gmail.com", justif_path: "path.jpg", amount_asked: 18000, subvention: subvention2)
+    request1 = SubventionRequest.new(email: "nicolas@gmail.com", amount_asked: 1, subvention: subvention2)
+    File.open(File.dirname(__FILE__) + '/../../app/assets/images/clan.jpg') do |f|
+      request1.justif_path = f
+    end
+    request1.save!
+    request2 = SubventionRequest.new(email: "nicolas@gmail.com", amount_asked: 18000, subvention: subvention2)
+    File.open(File.dirname(__FILE__) + '/../../app/assets/images/clan.jpg') do |f|
+      request2.justif_path = f
+    end
     assert_not request2.valid?, "Shouldn't be able to create a request with an amount_asked of 1800 for a subvention where amount_asked is 18000, if a previous request has been made for that subvention"
   end
 
   test "date of request creation must fit the start_date/end_date of subvention" do
     SubventionRequest.destroy_all
-    request = SubventionRequest.new(email: "nicolas@gmail.com", justif_path: "path.jpg", amount_asked: 1, subvention: subvention2)
+    request = SubventionRequest.new(email: "nicolas@gmail.com", amount_asked: 1, subvention: subvention1)
+    File.open(File.dirname(__FILE__) + '/../../app/assets/images/clan.jpg') do |f|
+      request.justif_path = f
+    end
     assert_not request.valid?, "Shouldn't be able to create a request for a subvention that ended in 2018"
   end
 

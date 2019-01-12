@@ -10,7 +10,7 @@
         <h4><%= subvention.name %></h4>
         <p>Du <%= subvention.start_date.strftime("%d/%m/%Y") %> au <%= subvention.end_date.strftime("%d/%m/%Y") %></p>
       </div>
-      <div class="card-user"><h5><%= subvention.subvention_requests.size %></h5>
+      <div class="card-user"><h5><%= subvention.participants %></h5>
         <p>participants</p>
       </div>
       <% if subvention.date_ok? %>

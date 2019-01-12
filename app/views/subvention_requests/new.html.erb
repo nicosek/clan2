@@ -3,16 +3,6 @@
 <br>
 
 <%= simple_form_for [@subvention, @subvention_request] do |f| %>
-  <% if @subvention_request.errors.any? %>
-      <div class="errors-container">
-        <ul>
-          <% @subvention_request.errors.messages.each do |message| %>
-            <li><%= message[1][0] %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
-
   <div class="form-group">
     <div class="row">
       <div class="col-xs-2 col-xs-offset-3">
@@ -22,6 +12,15 @@
         <%= f.text_field :email, class: 'form-control' %>
       </div>
     </div>
+    <% if @subvention_request.errors.include?("email") %>
+      <div class="row">
+        <div class="col-xs-4 col-xs-offset-5">
+          <div class="errors-container">
+            <%= @subvention_request.errors[:email][0] %>
+          </div>
+        </div>
+      </div>
+    <% end %>
   </div>
 
   <div class="form-group">
@@ -30,8 +29,17 @@
         <%= f.label :amount_asked, "Montant du remboursement (max. autorisé: #{@subvention.amount / 100}€)" %>
       </div>
       <div class="col-xs-4">
-        <%= f.text_field :amount_asked, class: 'form-control' %>
+        <%= f.number_field :amount_asked, class: 'form-control' %>
       </div>
+      <% if @subvention_request.errors.include?("amount_asked") %>
+        <div class="row">
+          <div class="col-xs-4 col-xs-offset-5">
+            <div class="errors-container">
+              <%= @subvention_request.errors[:amount_asked][0] %>
+            </div>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
 
@@ -44,6 +52,15 @@
         <%= f.input :justif_path, class: 'form-control', label: false %>
         <%= f.input :justif_path_cache, as: :hidden %>
       </div>
+      <% if @subvention_request.errors.include?("justif_path") %>
+      <div class="row">
+        <div class="col-xs-4 col-xs-offset-5">
+          <div class="errors-container">
+            <%= @subvention_request.errors[:justif_path][0] %>
+          </div>
+        </div>
+      </div>
+    <% end %>
     </div>
   </div>
   <br>
